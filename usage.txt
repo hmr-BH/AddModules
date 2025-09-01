@@ -1,0 +1,22 @@
+﻿Usage 使用方法:
+    add-module <command> [options]
+
+Subcommands 子命令:
+    install             Install a module                            安装一个模块
+    uninstall           Uninstall a module                          卸载指定的模块
+    list                List all installed modules                  列出所有安装的模块
+    show                Display information about a specific module 显示指定模块的详细信息
+    help                Show command help                           显示帮助
+    about               Show 'about' information                    显示’关于‘信息
+
+Global options 全局选项:
+    -h/--help           Show command help                           显示命令帮助
+    -q/--quiet          Automatically accept all prompts            所有选项自动同意，静默执行
+    --debug             Show detailed debug logs                    显示详细的调试日志
+    --version           Display version information                 显示版本信息
+    --about             Show 'about' information                    显示’关于‘信息
+
+Subcommand-specific options:
+    install
+        --upgrade       Install and upgrade the specified module    安装并升级指定的模块
+        --index-url     Specify an index/mirror URL                 指定镜像源
