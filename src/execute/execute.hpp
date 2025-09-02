@@ -21,5 +21,5 @@
 namespace execute
 {
     bool install_module(std::string_view module_name,
-        bool is_upgrade_mode, std::string_view index_url, bool is_debug);
+        bool upgrade, std::string_view index_url, bool debug);
 }

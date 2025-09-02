@@ -1,5 +1,9 @@
-﻿cmake_minimum_required(VERSION 4.0)
+﻿cmake_minimum_required(VERSION 3.20)
 project(AddModules)
+
+# 对于Windows，您需要运行
+#       [System.Environment]::SetEnvironmentVariable("MESON_PATH", "C:\Program Files\Meson", "Machine")
+# 注意，这里的"C:\Program Files\Meson"需要替换为你Meson的实际安装路径。
 
 if(WIN32)
     # MSVC
@@ -60,8 +64,14 @@ add_executable(add-module
         src/commands/help.cpp
         src/commands/about.cpp
         src/execute/install_module.cpp
-        src/execute/execute.h
 )
+
+include(FetchContent)
+FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/libcpr/cpr.git
+        GIT_TAG da40186618909b1a7363d4e4495aa899c6e0eb75)
+FetchContent_MakeAvailable(cpr)
+
+target_link_libraries(add-module PRIVATE cpr::cpr)
 
 add_compile_options(
         $<$<CXX_COMPILER_ID:GNU,Clang>:-finput-charset=UTF-8 -fexec-charset=UTF-8>
@@ -72,11 +82,44 @@ set(OUTPUT_DIR "${CMAKE_SOURCE_DIR}/bin")
 file(MAKE_DIRECTORY "${OUTPUT_DIR}")
 set(TARGET_FILE "$<TARGET_FILE:add-module>")
 
+# 复制 add-module 到输出目录
 add_custom_command(TARGET add-module POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${TARGET_FILE}"
         "${OUTPUT_DIR}/"
         COMMENT "Copying add-module to ${OUTPUT_DIR}"
+)
+
+# 复制 cpr.dll 到默认构建目录
+add_custom_command(TARGET add-module POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<TARGET_FILE:cpr::cpr>"
+        "$<TARGET_FILE_DIR:add-module>/"
+        COMMENT "Copying cpr.dll to default build directory"
+)
+
+# 复制 cpr.dll 到项目根目录/bin
+add_custom_command(TARGET add-module POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<TARGET_FILE:cpr::cpr>"
+        "${OUTPUT_DIR}/"
+        COMMENT "Copying cpr.dll to ${OUTPUT_DIR}"
+)
+
+# 复制 libcurl.dll 到默认构建目录
+add_custom_command(TARGET add-module POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/_deps/curl-build/lib/libcurl.dll>"
+        "$<TARGET_FILE_DIR:add-module>/"
+        COMMENT "Copying libcurl.dll to default build directory"
+)
+
+# 复制 libcurl.dll 到项目根目录/bin
+add_custom_command(TARGET add-module POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/_deps/curl-build/lib/libcurl.dll>"
+        "${OUTPUT_DIR}/"
+        COMMENT "Copying libcurl.dll to ${OUTPUT_DIR}"
 )
 
 if(MSVC)

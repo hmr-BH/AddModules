@@ -65,7 +65,7 @@ int cli::dispatch(int argc, char *argv[])
 
     if (rem.empty())
     {
-        std::println("warning: no parameters were found");
+        std::println(stderr, "Warning: no parameters were found");
         print_usage();
         return 1;
     }
@@ -80,7 +80,7 @@ int cli::dispatch(int argc, char *argv[])
     if (cmd == "help")       return commands::help();
     if (cmd == "about")      return commands::about();
 
-    std::println("error: unknown command: '{}'", cmd);
+    std::println(stderr, "Error: unknown command: '{}'", cmd);
     print_usage();
     return 0;
 }

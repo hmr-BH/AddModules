@@ -18,6 +18,7 @@
 #include <string_view>
 
 #include "commands.hpp"
+#include "../execute/execute.hpp"
 
 namespace commands {
 
@@ -25,7 +26,7 @@ namespace commands {
                 const cli::GlobalOptions& g)
     {
         bool upgrade = false;
-        std::string_view index_url = "https://hmrbh.cn/swarmclone/modules/simple";
+        std::string_view index_url = "http://hmrbh.cn/swarmclone/modules/simple";
         std::string_view module_name;
 
         for (size_t i = 0; i < args.size(); ++i)
@@ -55,20 +56,21 @@ namespace commands {
             }
             else
             {
-                std::println(stderr, "error: unexpected argument '{}'", arg);
+                std::println(stderr, "Error: unexpected argument '{}'", arg);
                 return 1;
             }
         }
 
         if (module_name.empty())
         {
-            std::println(stderr, "error: missing module name");
+            std::println(stderr, "Error: missing module name");
             return 1;
         }
 
         if (g.debug)
-            std::println("install: {} upgrade={}, index={}, debug={}", module_name, upgrade, index_url, g.debug);
+            std::println("Debug: install module '{}', upgrade={}, index={}, debug={}", module_name, upgrade, index_url, g.debug);
 
+        execute::install_module(module_name, upgrade, index_url, g.debug);
         return 0;
     }
 
