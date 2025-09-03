@@ -55,7 +55,7 @@ add_executable(add-module
         src/main.cpp
         src/cli/parser.cpp
         src/cli/parser.hpp
-        src/utils/executable_path.hpp
+        src/tools/executable_path.hpp
         src/commands/commands.hpp
         src/commands/install.cpp
         src/commands/uninstall.cpp
@@ -64,6 +64,8 @@ add_executable(add-module
         src/commands/help.cpp
         src/commands/about.cpp
         src/execute/install_module.cpp
+        src/tools/write_file.hpp
+        src/tools/progress_bar.hpp
 )
 
 include(FetchContent)

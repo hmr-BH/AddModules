@@ -21,10 +21,10 @@
 
 #include "parser.hpp"
 #include "../commands/commands.hpp"
-#include "../utils/executable_path.hpp"
+#include "../tools/executable_path.hpp"
 
 cli::GlobalOptions parse_global(const std::vector<std::string_view>& args,
-                       std::vector<std::string_view>& remaining)
+                                std::vector<std::string_view>& remaining)
 {
     cli::GlobalOptions g;
     for (auto arg : args) {
@@ -40,7 +40,7 @@ cli::GlobalOptions parse_global(const std::vector<std::string_view>& args,
 
 void print_version()
 {
-    std::println("add-module 1.0.0 from {}", executable_path());
+    std::println("add-module 1.0.0 from {}", tools::executable_path());
 }
 
 void print_usage()
@@ -50,7 +50,7 @@ void print_usage()
 
 void print_about()
 {
-    std::println(aboutText, executable_path());
+    std::println(aboutText, tools::executable_path());
 }
 
 int cli::dispatch(int argc, char *argv[])

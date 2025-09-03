@@ -18,13 +18,13 @@
 
 #include "commands.hpp"
 #include "../cli/parser.hpp"
-#include "../utils/executable_path.hpp"
+#include "../tools/executable_path.hpp"
 
 namespace commands {
 
     int about()
     {
-        std::println(aboutText, executable_path());
+        std::println(aboutText, tools::executable_path());
         return 0;
     }
 
